@@ -5,13 +5,13 @@ import useRestaurantMenu from "../utils/UseRestaurantMenu";
 const RestaurantMenu = () => {
   const { resId } = useParams();
 
-  const [resInfo, isLoaded] = useRestaurantMenu(resId);
+  const resInfo = useRestaurantMenu(resId);
+  console.log("res", resInfo);
 
-  // if (!resInfo || resInfo.length === 0) {
-  //   console.log("here", resInfo);
-  //   return <Shimmer />;
-  // }
-  if (!resInfo) return null;
+  if (!resInfo || resInfo.length === 0) {
+    console.log("here", resInfo);
+    return <Shimmer />;
+  }
 
   const { name, cuisines, costForTwoMessage } =
     resInfo?.cards[2]?.card.card.info;
@@ -19,20 +19,18 @@ const RestaurantMenu = () => {
   const { itemCards } =
     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
   console.log("items", itemCards);
-  // if (resInfo.length > 0) {
-  //   const categories =
-  //     resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card.filter(
-  //       (c) =>
-  //         c?.card?.card?.["@type"] ===
-  //         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
-  //     );
+  if (resInfo.length > 0) {
+    const categories =
+      resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card.filter(
+        (c) =>
+          c?.card?.card?.["@type"] ===
+          "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+      );
 
-  //   console.log("categories", categories);
-  // }
+    console.log("categories", categories);
+  }
 
-  return !isLoaded ? (
-    <Shimmer />
-  ) : (
+  return (
     <div className="menu">
       <h1>{name}</h1>
       <h3>
